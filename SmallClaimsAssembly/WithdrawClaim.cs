@@ -17,7 +17,7 @@ using Microsoft.Xrm.Sdk.Workflow;
 
 namespace SmallClaimsAssembly
 {
-    public class CreateClaim : CodeActivity
+    public class WithdrawClaim : CodeActivity
     {
 
         [Input("Regarding Small Claim:")]
@@ -37,13 +37,13 @@ namespace SmallClaimsAssembly
             IOrganizationService service = serviceFactory.CreateOrganizationService(workflowContext.UserId);
             ITracingService traceService = context.GetExtension<ITracingService>();
 
-            EntityReference smallclaim = context.GetValue(this.SmallClaim);
+            EntityReference smallclaims = context.GetValue(this.SmallClaim);
 
             bool success = false;
             string retstring = "";
 
             #region Query (API Settings)
-            
+
             QueryExpression settingsQuery = new QueryExpression("nal_apisettings");
             settingsQuery.Criteria.AddCondition(new ConditionExpression("nal_apisettingsid", ConditionOperator.Equal, "4F63E58E-8655-EB11-8128-005056B21276"));
             settingsQuery.ColumnSet = new ColumnSet(true);
@@ -54,12 +54,14 @@ namespace SmallClaimsAssembly
 
             try
             {
-                if(APISettings != null)
+                if (APISettings != null)
                 {
                     string requesturl = APISettings.GetAttributeValue<string>("nal_url");
                     string orgurl = APISettings.GetAttributeValue<string>("nal_orgurl");
-                    
-                    WebRequest request = WebRequest.Create(requesturl + "/api/smallclaims/createclaim/" + orgurl + "/" + smallclaim.Id);
+
+                    string fullrequesturl = requesturl + "/api/smallclaims/withdrawclaim/" + orgurl + "/" + smallclaims.Id;
+
+                    WebRequest request = WebRequest.Create(fullrequesturl);
                     request.Method = "GET";
                     WebResponse response = request.GetResponse();
 
@@ -75,7 +77,6 @@ namespace SmallClaimsAssembly
             }
             catch (Exception ex)
             {
-                //Console.WriteLine(ex.Message);
                 retstring = ex.Message;
                 success = false;
             }
@@ -85,5 +86,8 @@ namespace SmallClaimsAssembly
             this.RetString.Set(context, retstring);
 
         }
+
+
     }
+
 }

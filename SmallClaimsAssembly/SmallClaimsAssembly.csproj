@@ -88,10 +88,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CreateClaim.cs" />
-    <Compile Include="CWAIntegrationTest.cs" />
+    <Compile Include="LiabilityReply.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UpdateSmallClaims.cs" />
-    <Compile Include="ValidateClaim.cs" />
+    <Compile Include="WithdrawClaim.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
