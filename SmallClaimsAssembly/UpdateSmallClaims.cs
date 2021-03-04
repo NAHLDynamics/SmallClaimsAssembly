@@ -397,7 +397,7 @@ namespace SmallClaimsAssembly
                         if (attributeTo == "nal_doesclientownthiscar")
                         {
                             var subClaimType = ((OptionSetValue)(from.Attributes[attributeFrom])).Value;
-                            var newvalue = new OptionSetValue();
+                            OptionSetValue newvalue = null;
 
                             if (subClaimType == 808850024 || subClaimType == 808850025 || subClaimType == 808850032) //driver, bus driver, taxi driver
                             {
@@ -434,14 +434,18 @@ namespace SmallClaimsAssembly
 
 
                             //decide if we update
-                            if (to.Attributes.Contains(attributeTo) && newvalue.Value > 0)
+                            if (newvalue != null)
                             {
-                                if (((OptionSetValue)to.Attributes[attributeTo]).Value != newvalue.Value)
+                                //decide if we update
+                                if (to.Attributes.Contains(attributeTo))
                                 {
-                                    smallClaimsUpdate.Attributes[attributeTo] = newvalue;
+                                    if (((OptionSetValue)to.Attributes[attributeTo]).Value != newvalue.Value)
+                                    {
+                                        smallClaimsUpdate.Attributes[attributeTo] = newvalue;
+                                    }
                                 }
+                                else smallClaimsUpdate.Attributes[attributeTo] = newvalue;
                             }
-                            else smallClaimsUpdate.Attributes[attributeTo] = newvalue;
                         }
 
                         //updated to here
