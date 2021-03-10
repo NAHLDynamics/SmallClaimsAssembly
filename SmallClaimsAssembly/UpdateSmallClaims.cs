@@ -329,7 +329,7 @@ namespace SmallClaimsAssembly
                         if (attributeTo == "nal_clientinvolvement")
                         {
                             var subClaimType = ((OptionSetValue)(from.Attributes[attributeFrom])).Value;
-                            if (subClaimType == 808850024) //driver
+                            if (subClaimType == 808850024 || subClaimType== 808850025 || subClaimType == 808850032 || subClaimType == 808850027) //driver // 25 32 27
                             {
                                 if (to.Attributes.Contains(attributeTo))
                                 {
